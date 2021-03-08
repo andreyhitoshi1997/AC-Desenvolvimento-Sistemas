@@ -10,7 +10,7 @@
 <body>
     <div class='linha'>
         <div class='coluna-50'>
-            <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Background. Imagem de calculadora"></img>
+            <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Background. Imagem Logo PetFrien"></img>
             <strong>
                 <h1 class='txt'>Cadastro</h1>
             </strong>
@@ -19,14 +19,14 @@
             </strong>
         </div>
         <div class='coluna-50'>
-            <form class="Register" action="/vendedor_cadastro" method="POST">
+            <form class="Register" action="/usuario_cadastro" method="POST">
                 <div class="Register-group">
                     <h3 class="title">Crie sua conta</h3>
-                    <input type='text' name='nome_vendedor' placeholder='Nome' class="Register-Field" required />
-                    <input type='text' name='telefone_vendedor' placeholder='Telefone' class="Register-Field" required ></input>
-                    <input type='text' name='cnpj_vendedor' placeholder='CNPJ' class="Register-Field" required ></input>
-                    <input type='email' name='email_vendedor' placeholder='Email' class="Register-Field" required ></input>
-                    <input type='password' name='senha_vendedor' placeholder='Senha' class="Register-Field" required ></input>
+                    <input type='text' name='nome_usuario' placeholder='Nome' class="Register-Field" required />
+                    <input type='text' name='telefone_usuario' placeholder='Telefone' class="Register-Field" required ></input>
+                    <input type='text' name='cpf_usuario' placeholder='CPF' class="Register-Field" required ></input>
+                    <input type='email' name='email_usuario' placeholder='Email' class="Register-Field" required ></input>
+                    <input type='password' name='senha' placeholder='Senha' class="Register-Field" required ></input>
 
                     <button type="submit" class="Register-Btn">Cadastre-se</button>
                     {% if message != "" %}
