@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Cadastre-se</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/register.css') }}"></link>
+    </link>
+</head>
+
+<body>
+    <div class='linha'>
+        <div class='coluna-50'>
+            <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Background. Imagem de calculadora"></img>
+            <strong>
+                <h1 class='txt'>Cadastro</h1>
+            </strong>
+            <strong>
+                <p>Seja um Credenciado da maior rede de PetShops do Brasil</p>
+            </strong>
+        </div>
+        <div class='coluna-50'>
+            <form class="Register" action="/cadastro" method="POST">
+                <div class="Register-group">
+                    <h3 class="title">Crie sua conta</h3>
+                    <input type='text' name='usuario_nome' placeholder='Nome' class="Register-Field" required />
+                    <input type='text' name='usuario_sobrenome' placeholder='Sobrenome' class="Register-Field" required ></input>
+                    <input type='email' name='usuario_login' placeholder='Email' class="Register-Field" required ></input>
+                    <input type='password' name='usuario_senha' placeholder='Senha' class="Register-Field" required ></input>
+
+                    <button type="submit" class="Register-Btn">Cadastre-se</button>
+                    {% if message != "" %}
+                        <label class="Register-Error">{{message}}</label>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
