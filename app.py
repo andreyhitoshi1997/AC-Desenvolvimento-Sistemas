@@ -17,6 +17,9 @@ api = Api(app)
 def cria_banco():
     banco.create_all()
 
+@app.route('/')
+def login():
+    return render_template('login.html')
 
 @app.route('/cadastro_vendedor')
 def vendedor():
@@ -30,11 +33,7 @@ def usuario():
 def entregador():
     return render_template('cadastro_entregador.html')
 
-@app.route('/home')
-def home():
-    if login_ok(request):
-        pass
-    return render_template("login.html", message="Sem autorização.")
+
 
 
 def login_ok(req):
