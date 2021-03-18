@@ -17,6 +17,9 @@ api = Api(app)
 def cria_banco():
     banco.create_all()
 
+@app.route('/home')
+def home():
+    return render_template("home.html")
 @app.route('/')
 def login():
     return render_template('login.html')
@@ -47,7 +50,7 @@ def login_ok(req):
 api.add_resource(VendedorRegistro, '/vendedor_cadastro')
 api.add_resource(VendedorLogin, '/vendedor_login')
 api.add_resource(VendedorLogout, '/logout')
-# api.add_resource(Usuario, '/usuarios/<int:id_usuario>')
+#api.add_resource(Usuario, '/usuarios/<str:id_usuario>')
 api.add_resource(UsuarioRegistro, '/usuario_cadastro')
 api.add_resource(UsuarioLogin, '/usuario_login')
 api.add_resource(UsuarioLogout, '/logout')

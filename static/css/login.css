@@ -26,7 +26,7 @@ body {
 .content::before {
     content: "";
     position: absolute;
-    background-color: #58af9b;
+    background-color: #fbda6f;
     width: 40%;
     height: 100%;
     border-top-left-radius: 15px;
@@ -41,10 +41,10 @@ body {
     text-transform: capitalize;
 }
 .title-primary {
-    color: #fff;
+    color: #000;
 }
 .title-second {
-    color: #58af9b;
+    color: #000;
 }
 .description {
     font-size: 14px;
@@ -52,15 +52,15 @@ body {
     line-height: 30px;
 }
 .description-primary {
-    color: #fff;
+    color: #000;
 }
 .description-second {
-    color: #7f8c8d;
+    color: #000;
 }
 .btn {
     border-radius: 15px;
     text-transform: uppercase;
-    color: #fff;
+    color: #000;
     font-size: 10px;
     padding: 10px 50px;
     cursor: pointer;
@@ -77,23 +77,28 @@ body {
 }
 .btn-primary:hover {
     background-color: #fff;
-    color: #58af9b;
+    color: #000;
 }
 .btn-second {
-    background-color: #58af9b;
-    border: 1px solid #58af9b;
+    background-color: #fbda6f;
+    border: 1px solid #fbda6f;
     transition: background-color .5s;
 }
 .btn-second:hover {
     background-color: #fff;
-    border: 1px solid #58af9b;
-    color: #58af9b;
+    border: 1px solid #fbda6f;
+    color: #000;
 }
 .first-content {
     display: flex;
 }
 .first-content .second-column {
     z-index: 11;
+}
+.pata{
+    width: 30%;
+    align-items: center;
+    
 }
 .first-column {
     text-align: center;
@@ -116,9 +121,9 @@ body {
     transition: background-color .5s;
 }
 .link-social-media:hover .item-social-media{
-    background-color: #58af9b;
-    color: #fff;
-    border-color: #58af9b;
+    background-color:#fbda6f;
+    color: #000;
+    border-color: #fbda6f;
 }
 .list-social-media {
     display: flex;
@@ -140,24 +145,32 @@ body {
 }
 .form input {
     height: 45px;
-    width: 100%;
+    width: 95%;
     border: none;
-    background-color: #ecf0f1;
+    border-collapse:collapse ;
+    background-color: #fff;
+}
+input:focus{
+    outline: 0;
 }
 input:-webkit-autofill 
 {    
     -webkit-box-shadow: 0 0 0px 1000px #ecf0f1 inset !important;
-    -webkit-text-fill-color: #000 !important;
+    -webkit-text-fill-color: #ececec !important;
 }
 .label-input {
-    background-color: #ecf0f1;
+    background-color: #fff;
     display: flex;
     align-items: center;
-    margin: 8px;
+    margin: 6px;
+    border-radius: 5px;
+    border: solid #bdc3c7;
+
 }
 .icon-modify {
     color: #7f8c8d;
     padding: 0 5px;
+
 }
 
 /* second content*/
@@ -175,7 +188,7 @@ input:-webkit-autofill
     z-index: -1;
 }
 .password {
-    color: #34495e;
+    color: #000;
     font-size: 14px;
     margin: 15px 0;
     text-align: center;

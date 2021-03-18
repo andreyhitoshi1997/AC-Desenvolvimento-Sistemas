@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
+    
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/login.css') }}"></link>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
     
@@ -14,6 +15,7 @@
     <div class="container">
         <div class="content first-content">
             <div class="first-column">
+                <img  class ='pata'src='/static/images/pata-de-cachorro.png'>
                 <h2 class="title title-primary">PetFriends</h2>
                 <p class="description description-primary">Bem Vindo a maior rede de PetShop do Brasil</p>
                 
@@ -24,7 +26,7 @@
                     <ul class="list-social-media">
                         <a class="link-social-media" href="#">
                             <li class="item-social-media">
-                                <i class="fab fa-facebook-f"></i>        
+                                <i class="fas fa-shipping-fast"></i>        
                             </li>
                         </a>
                         <a class="link-social-media" href="#">
@@ -39,17 +41,17 @@
                         </a>
                     </ul>
                 </div><!-- social media -->
-                <form class="form">                   
+                <form class="form" action="/usuario_login" method="POST">                   
                     <label class="label-input" for="">
                         <i class="far fa-envelope icon-modify"></i>
-                        <input type="email" placeholder="Email">
+                        <input type="email" id="email" name='email_usuario'placeholder="Email" required>
                     </label>
                     
                     <label class="label-input" for="">
                         <i class="fas fa-lock icon-modify"></i>
-                        <input type="password" placeholder="Password">
+                        <input type="password" id="password" name="senha" placeholder="Password" required>
                     </label>
-                    <p class="description description-primary">please login with your personal info</p>
+                    
                     <button id="signin" class="btn btn-second">Login</button>    
                 </form>
             </div><!-- second column -->
