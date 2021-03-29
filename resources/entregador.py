@@ -18,12 +18,23 @@ atributos_login.add_argument('email_entregador', type=str, required=True, help="
 atributos_login.add_argument('senha_entregador', type=str, required=True, help="Ei! a sua 'senha' é obrigatória!")
 
 
-class Entregador(Resource):
+class Entregadores(Resource):
     def get(self, id_entregador):
         entregador = EntregadorModel.achar_entregador(id_entregador)
         if entregador:
             return entregador.json()
         return {"message": "Entregador não encontrado."}, 404
+
+    def put(self, id_entregador):
+        dados = atributos.parse_args()
+        entregador = EntregadorModel.achar_entregador(id_entregador)
+        if entregador:
+            entregador.atualizar_entregador(**dados)
+            entregador.salvar_entregador()
+            return {"message": "Entregador atualizado com sucesso!"}, 200
+        entregador = EntregadorModel(**dados)
+        entregador.salvar_entregador()
+        return {"message": "Entregador criado com sucesso!"}, 201
 
     def delete(self, id_entregador):
         entregador = EntregadorModel.achar_entregador(id_entregador)

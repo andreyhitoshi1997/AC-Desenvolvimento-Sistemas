@@ -25,7 +25,8 @@ class EntregadorModel(banco.Model):
             'nome_entregador': self.nome_entregador,
             'cpf_entregador': self.cpf_entregador,
             'telefone_entregador': self.telefone_entregador,
-            'cnh_entregador': self.cnh_entregador
+            'cnh_entregador': self.cnh_entregador,
+            'email_entregador': self.email_entregador
         }
 
     @classmethod
@@ -45,6 +46,15 @@ class EntregadorModel(banco.Model):
     def salvar_entregador(self):
         banco.session.add(self)
         banco.session.commit()
+
+    def atualizar_entregador(self, nome_entregador, cpf_entregador, telefone_entregador, cnh_entregador, email_entregador, senha_entregador):
+        if email_entregador == email_entregador:
+            if senha_entregador == senha_entregador:
+                self.nome_entregador = nome_entregador
+                self.cpf_entregador = cpf_entregador
+                self.telefone_entregador = telefone_entregador
+                self.cnh_entregador = cnh_entregador
+
 
     def deletar_entregador(self):
         banco.session.delete(self)

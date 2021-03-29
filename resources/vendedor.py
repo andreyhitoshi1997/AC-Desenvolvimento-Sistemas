@@ -1,7 +1,7 @@
+from flask.helpers import make_response
 from flask_restful import Resource, reqparse
 from flask import render_template
 from models.vendedor import VendedorModel
-from flask.helpers import make_response
 from werkzeug.security import safe_str_cmp
 
 
@@ -12,24 +12,36 @@ atributos.add_argument('cnpj_vendedor', type=str, required=True, help="Ei! o seu
 atributos.add_argument('email_vendedor', type=str, required=True, help="Ei! o seu 'e-mail' é obrigatório!")
 atributos.add_argument('senha_vendedor', type=str, required=True, help="Ei! a sua 'senha' é obrigatória!")
 
+
 atributos_login = reqparse.RequestParser()
 atributos_login.add_argument('email_vendedor', type=str, required=True, help="Ei! o seu 'e-mail' é obrigatório!")
 atributos_login.add_argument('senha_vendedor', type=str, required=True, help="Ei! a sua 'senha' é obrigatória!")
 
 
-class Vendedor(Resource):
+class Vendedores(Resource):
     def get(self, id_vendedor):
         vendedor = VendedorModel.achar_vendedor(id_vendedor)
         if vendedor:
             return vendedor.json()
         return {"message": "Vendedor não encontrado."}, 404
 
+    def put(self, id_vendedor):
+        dados = atributos.parse_args()
+        vendedor = VendedorModel.achar_vendedor(id_vendedor)
+        if vendedor:
+            vendedor.atualizar_vendedor(**dados)
+            vendedor.salvar_vendedor()
+            return {"message": "Vendedor atualizado com sucesso!"}, 200
+        vendedor = VendedorModel(**dados)
+        vendedor.salvar_vendedor()
+        return {"message": "Vendedor criado com sucesso!"}, 201
+
     def delete(self, id_vendedor):
-        user = VendedorModel.achar_vendedor(id_vendedor)
-        if user:
-            user.deletar_vendedor()
-            return {'message': 'Vendedor deletado com sucesso!'}
-        return {'message': 'Vendedor não encontrado!'}, 404
+        vendedor = VendedorModel.achar_vendedor(id_vendedor)
+        if vendedor:
+            vendedor.deletar_vendedor()
+            return {"message": "Vendedor deletado com sucesso!"}, 200
+        return {"message": "Vendedor não encontrado."}, 404
 
 
 class VendedorRegistro(Resource):
@@ -37,8 +49,8 @@ class VendedorRegistro(Resource):
         dados = atributos.parse_args()
         if VendedorModel.achar_por_login(dados['email_vendedor']):
             return {"message": "O seu login '{}' já existe".format(dados['email_vendedor'])}
-        user = VendedorModel(**dados)
-        user.salvar_vendedor()
+        vendedor = VendedorModel(**dados)
+        vendedor.salvar_vendedor()
         return {"message": "Vendedor criado com sucesso!"}, 201
 
 

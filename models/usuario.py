@@ -1,28 +1,29 @@
 from sql_alchemy import banco
 
 
-class UserModel(banco.Model):
+class UsuarioModel(banco.Model):
     __tablename__ = 'usuarios'
     id_usuario = banco.Column(banco.Integer, primary_key=True)
     nome_usuario = banco.Column(banco.String(50))
     telefone_usuario = banco.Column(banco.String(11))
     cpf_usuario = banco.Column(banco.String(11))
     email_usuario = banco.Column(banco.String(50))
-    senha = banco.Column(banco.String(30))
+    senha_usuario = banco.Column(banco.String(30))
 
-    def __init__(self, nome_usuario, telefone_usuario, cpf_usuario, email_usuario, senha):
+    def __init__(self, nome_usuario, telefone_usuario, cpf_usuario, email_usuario, senha_usuario):
         self.nome_usuario = nome_usuario
         self.telefone_usuario = telefone_usuario
         self.cpf_usuario = cpf_usuario
         self.email_usuario = email_usuario
-        self.senha = senha
+        self.senha_usuario = senha_usuario
 
     def json(self):
         return {
             'id_usuario': self.id_usuario,
             'nome_usuario': self.nome_usuario,
             'telefone_usuario': self.telefone_usuario,
-            'cpf_usuario': self.cpf_usuario
+            'cpf_usuario': self.cpf_usuario,
+            'email_usuario': self.email_usuario
         }
 
     @classmethod
@@ -42,6 +43,13 @@ class UserModel(banco.Model):
     def salvar_usuario(self):
         banco.session.add(self)
         banco.session.commit()
+
+    def atualizar_usuario(self, nome_usuario, telefone_usuario, cpf_usuario, email_usuario, senha_usuario):
+        self.nome_usuario = nome_usuario
+        self.telefone_usuario = telefone_usuario
+        self.cpf_usuario = cpf_usuario
+        self.email_usuario == email_usuario
+        self.senha_usuario == senha_usuario
 
     def deletar_usuario(self):
         banco.session.delete(self)

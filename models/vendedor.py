@@ -22,7 +22,8 @@ class VendedorModel(banco.Model):
             'id_vendedor': self.id_vendedor,
             'nome_vendedor': self.nome_vendedor,
             'telefone_vendedor': self.telefone_vendedor,
-            'vendedor-cnpj_vendedor': self.cnpj_vendedor
+            'cnpj_vendedor': self.cnpj_vendedor,
+            'email_vendedor': self.email_vendedor,
         }
 
     @classmethod
@@ -43,10 +44,12 @@ class VendedorModel(banco.Model):
         banco.session.add(self)
         banco.session.commit()
 
-    def atualizar_vendedor(self, nome_vendedor, telefone_vendedor, cnpj_vendedor):
+    def atualizar_vendedor(self, nome_vendedor, telefone_vendedor, cnpj_vendedor, email_vendedor, senha_vendedor):
         self.nome_vendedor = nome_vendedor
         self.telefone_vendedor = telefone_vendedor
         self.cnpj_vendedor = cnpj_vendedor
+        self.email_vendedor == email_vendedor
+        self.senha_vendedor == senha_vendedor
 
     def deletar_vendedor(self):
         banco.session.delete(self)
