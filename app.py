@@ -20,14 +20,24 @@ def cria_banco():
 
 @app.route('/home')
 def home():
+    return render_template('home.html')
+
+
+@app.route('/main_home')
+def main_home():
     # if login_ok(request):
-        return render_template('home.html')
+    return render_template('home_login.html')
     # return render_template('login.html', message="Sem autorização")
 
 
 @app.route('/')
 def login():
     return render_template('login.html')
+
+
+@app.route('/cadastros')
+def cadastros():
+    return render_template('cadastros.html')
 
 
 @app.route('/cadastro_vendedor')
