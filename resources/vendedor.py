@@ -3,7 +3,7 @@ from flask_restful import Resource, reqparse
 from flask import render_template
 from models.vendedor import VendedorModel
 from werkzeug.security import safe_str_cmp
-
+import traceback
 
 atributos = reqparse.RequestParser()
 atributos.add_argument('nome_vendedor', type=str, required=True, help="Ei! o seu 'nome' é obrigatório!")
@@ -11,11 +11,12 @@ atributos.add_argument('telefone_vendedor', type=str, required=True, help="Ei! o
 atributos.add_argument('cnpj_vendedor', type=str, required=True, help="Ei! o seu 'cnpj' é obrigatório!")
 atributos.add_argument('email_vendedor', type=str, required=True, help="Ei! o seu 'e-mail' é obrigatório!")
 atributos.add_argument('senha_vendedor', type=str, required=True, help="Ei! a sua 'senha' é obrigatória!")
-
+atributos.add_argument('ativado', type=bool)
 
 atributos_login = reqparse.RequestParser()
 atributos_login.add_argument('email_vendedor', type=str, required=True, help="Ei! o seu 'e-mail' é obrigatório!")
 atributos_login.add_argument('senha_vendedor', type=str, required=True, help="Ei! a sua 'senha' é obrigatória!")
+atributos.add_argument('ativado', type=bool)
 
 
 class Vendedores(Resource):
@@ -23,7 +24,7 @@ class Vendedores(Resource):
         vendedor = VendedorModel.achar_vendedor(id_vendedor)
         if vendedor:
             return vendedor.json()
-        return {"message": "Vendedor não encontrado."}, 404
+        return make_response(render_template(".html", message= "Vendedor não encontrado."), 404)
 
     def put(self, id_vendedor):
         dados = atributos.parse_args()
@@ -34,14 +35,14 @@ class Vendedores(Resource):
             return {"message": "Vendedor atualizado com sucesso!"}, 200
         vendedor = VendedorModel(**dados)
         vendedor.salvar_vendedor()
-        return {"message": "Vendedor criado com sucesso!"}, 201
+        return make_response(render_template(".html", message= "Vendedor criado com sucesso!"), 201)
 
     def delete(self, id_vendedor):
         vendedor = VendedorModel.achar_vendedor(id_vendedor)
         if vendedor:
             vendedor.deletar_vendedor()
             return {"message": "Vendedor deletado com sucesso!"}, 200
-        return {"message": "Vendedor não encontrado."}, 404
+        return make_response(render_template(".html", message= "Vendedor não encontrado."), 404)
 
 
 class VendedorRegistro(Resource):
@@ -50,8 +51,15 @@ class VendedorRegistro(Resource):
         if VendedorModel.achar_por_login(dados['email_vendedor']):
             return {"message": "O seu login '{}' já existe".format(dados['email_vendedor'])}
         vendedor = VendedorModel(**dados)
-        vendedor.salvar_vendedor()
-        return {"message": "Vendedor criado com sucesso!"}, 201
+        vendedor.ativado = False
+        try:
+            vendedor.salvar_vendedor()
+            vendedor.enviar_email_confirmacao_vendedor()
+        except:
+            vendedor.deletar_vendedor()
+            traceback.print_exc()
+            return make_response(render_template("cadastro_vendedores.html", message='Erro interno de servidor'), 500)
+        return make_response(render_template("login.html", message= "Sucesso! Cadastro pendente de confirmação via email"), 201)
 
 
 class VendedorLogin(Resource):
@@ -60,8 +68,10 @@ class VendedorLogin(Resource):
         dados = atributos_login.parse_args()
         user = VendedorModel.achar_por_login(dados['email_vendedor'])
         if user and safe_str_cmp(user.senha_vendedor, dados['senha_vendedor']):
-            return {'message': 'Login realizado com sucesso!'}, 200
-        return{'message': 'Usuário ou senha incorretos.'}, 401
+            if user.ativado:
+                return make_response(render_template("home.html", message='Login realizado com sucesso!'), 200)
+            return make_response(render_template("login.html", message= 'Usuário não confirmado'), 400)
+        return make_response(render_template("login.html", message= 'Usuário ou senha incorretos.'), 401)
 
 
 class VendedorLogout(Resource):
@@ -70,3 +80,18 @@ class VendedorLogout(Resource):
         r.set_cookie("email_vendedor", "")
         r.set_cookie("senha_vendedor", "")
         return r
+
+
+class VendedorConfirmado(Resource):
+    @classmethod
+    def get(cls, id_vendedor):
+        vendedor = VendedorModel.achar_vendedor(id_vendedor)
+
+        if not vendedor:
+            return {'message': 'Vendedor não encontrado'}, 404
+
+        vendedor.ativado = True
+        vendedor.salvar_vendedor()
+        #return{'message':'Usuário confirmado com sucesso'}, 200
+        headers = {'Content-Type': 'text/html'}
+        return make_response(render_template('usuario_confirmado.html' ), 200, headers)

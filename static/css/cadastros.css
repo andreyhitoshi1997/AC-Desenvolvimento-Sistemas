@@ -1,0 +1,79 @@
+.cabecalho_{
+    background: #FFFFFF;
+    padding: 20px 0;
+}
+
+.caixa h1{
+    position: center;
+    width: 940px;
+    margin: 0 auto;
+    
+}
+
+
+.servicos{
+    width: 940px; /*  largura fixa de 940px*/
+    margin: 0 auto; /* Espaçamento lateral de 0 e automatico para os lados */
+    padding: 50px 0; /* padding é o espaçamento interno: 50 px para cima e para baixo e 0 para os lados*/
+}
+.servicos li{
+    display: inline-block;
+    text-align: center;
+    width: 30%;
+    vertical-align: top; /* orientar pela linha de cima*/
+    margin: 0 1.5%;
+    padding: 30px 20px;
+    box-sizing: border-box; /* */
+    border: 2px solid #000000;
+    border-radius: 10px;
+
+}
+
+.servicos li:hover{
+    border-color: #c78c19 ;
+}
+.servicos li:active{
+    border-color: #088c19;
+}
+.servicos li:hover h2{
+    font-size: 34px;
+}
+.servicos h2{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.servico-usuarios{
+    max-width:200px;
+    max-height:150px;
+    width: auto;
+    height: auto;
+}
+.servico-descricao{
+    font-size: 18px;
+}
+.link{
+    text-decoration: none;
+    font-style: italic;
+
+}
+.servico-preco{
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+footer {
+    text-align: center;
+    background: #fbda6f;
+    padding: 40px 0;
+}
+footer img{
+    max-width: 50px;
+}
+
+.copyright{
+    color: #000;
+    font-size: 13px;
+    margin-top: 13px;
+}

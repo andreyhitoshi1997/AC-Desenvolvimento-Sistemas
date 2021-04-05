@@ -3,6 +3,7 @@ from flask import render_template
 from models.entregador import EntregadorModel
 from flask.helpers import make_response
 from werkzeug.security import safe_str_cmp
+import traceback
 
 
 atributos = reqparse.RequestParser()
@@ -12,18 +13,20 @@ atributos.add_argument('telefone_entregador', type=str, required=True, help="Ei!
 atributos.add_argument('cnh_entregador', type=str, required=True, help="Ei! a sua 'cnh' é obrigatória!")
 atributos.add_argument('email_entregador', type=str, required=True, help="Ei! o seu 'e-mail' é obrigatório!")
 atributos.add_argument('senha_entregador', type=str, required=True, help="Ei! a sua 'senha' é obrigatória!")
+atributos.add_argument('ativado', type=bool)
+
 
 atributos_login = reqparse.RequestParser()
 atributos_login.add_argument('email_entregador', type=str, required=True, help="Ei! o seu 'e-mail' é obrigatório!")
 atributos_login.add_argument('senha_entregador', type=str, required=True, help="Ei! a sua 'senha' é obrigatória!")
-
+atributos.add_argument('ativado', type=bool)
 
 class Entregadores(Resource):
     def get(self, id_entregador):
         entregador = EntregadorModel.achar_entregador(id_entregador)
         if entregador:
             return entregador.json()
-        return {"message": "Entregador não encontrado."}, 404
+        return make_response(render_template(".html", message= "Entregador não encontrado."), 404)
 
     def put(self, id_entregador):
         dados = atributos.parse_args()
@@ -34,14 +37,14 @@ class Entregadores(Resource):
             return {"message": "Entregador atualizado com sucesso!"}, 200
         entregador = EntregadorModel(**dados)
         entregador.salvar_entregador()
-        return {"message": "Entregador criado com sucesso!"}, 201
+        return make_response(render_template(".html", message= "Entregador criado com sucesso!"), 201)
 
     def delete(self, id_entregador):
         entregador = EntregadorModel.achar_entregador(id_entregador)
         if entregador:
             entregador.deletar_entregador()
-            return {'message': 'Entregador deletado com sucesso!'}
-        return {'message': 'Entregador não encontrado!'}, 404
+            return make_response(render_template(".html", message= 'Entregador deletado com sucesso!'), 200)
+        return make_response(render_template(".html", message= 'Entregador não encontrado!'), 404)
 
 
 class EntregadorRegistro(Resource):
@@ -50,8 +53,15 @@ class EntregadorRegistro(Resource):
         if EntregadorModel.achar_por_login(dados['email_entregador']):
             return {"message": "O seu login '{}' já existe".format(dados['email_entregador'])}
         entregador = EntregadorModel(**dados)
-        entregador.salvar_entregador()
-        return {"message": "Entregador criado com sucesso!"}, 201
+        entregador.ativado = False
+        try:
+            entregador.salvar_entregador()
+            entregador.enviar_confirmacao_email_entregador()
+        except:
+            entregador.deletar_entregador()
+            traceback.print_exc()
+            return make_response(render_template("cadastro_entregador.html",message= 'Erro interno de servidor'), 500)
+        return make_response(render_template("login.html", message= "Sucesso! Cadastro pendente de confirmação via email"), 201)
 
 
 class EntregadorLogin(Resource):
@@ -60,8 +70,11 @@ class EntregadorLogin(Resource):
         dados = atributos_login.parse_args()
         entregador = EntregadorModel.achar_por_login(dados['email_entregador'])
         if entregador and safe_str_cmp(entregador.senha_entregador, dados['senha_entregador']):
-            return {'message': 'Login realizado com sucesso!'}, 200
-        return{'message': 'Usuário ou senha incorretos.'}, 401
+            if entregador.ativado:
+                # token_de_acesso = create_access_token(identity=user.id_usuario)
+                return make_response(render_template("home.html",message= 'Login realizado com sucesso!'), 200)
+            return make_response(render_template("login.html", message= 'Usuário não confirmado'), 400)
+        return make_response(render_template("login.html", message= 'Usuário ou senha incorretos.'), 401)
 
 
 class EntregadorLogout(Resource):
@@ -72,3 +85,18 @@ class EntregadorLogout(Resource):
         # jwt_id = get_raw_jwt()['jti']  # JWT Token Identifier
         # BLACKLIST.add(jwt_id)
         return r
+
+
+class EntregadorConfirmado(Resource):
+    @classmethod
+    def get(cls, id_entregador):
+        entregador = EntregadorModel.achar_entregador(id_entregador)
+
+        if not entregador:
+            return {'message': 'Usuário não encontrado'}, 404
+
+        entregador.ativado = True
+        entregador.salvar_entregador()
+        #return{'message':'Usuário confirmado com sucesso'}, 200
+        headers = {'Content-Type': 'text/html'}
+        return make_response(render_template('usuario_confirmado.html'), 200, headers)

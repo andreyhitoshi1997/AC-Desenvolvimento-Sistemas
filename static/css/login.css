@@ -7,6 +7,7 @@
 body {
     font-family: 'Open Sans', sans-serif;
 }
+
 .container {
     display: flex;
     justify-content: center;
@@ -70,6 +71,7 @@ body {
     border: none;
     margin-top: 1rem;
 }
+
 .btn-primary {
     background-color: transparent;
     border: 1px solid #fff;
@@ -79,16 +81,29 @@ body {
     background-color: #fff;
     color: #000;
 }
+.login_error{
+    display: block;
+    margin-left: 8%;
+    color: red;
+    font-weight: bold;
+    font-family: "Lucida Sans Unicode";
+}
 .btn-second {
     background-color: #fbda6f;
     border: 1px solid #fbda6f;
     transition: background-color .5s;
 }
+
 .btn-second:hover {
     background-color: #fff;
     border: 1px solid #fbda6f;
     color: #000;
 }
+
+.nova_conta{
+    margin-bottom: 10px;
+}
+
 .first-content {
     display: flex;
 }
@@ -401,6 +416,7 @@ input:-webkit-autofill
         width: 90%;
     }
     
+    
     /* ANIMAÇÃO MOBILE CSS*/
 
     @keyframes deslocamentoEsq {
@@ -526,6 +542,8 @@ input:-webkit-autofill
         width: 100%;
     }
 }
+
+
 
 
 

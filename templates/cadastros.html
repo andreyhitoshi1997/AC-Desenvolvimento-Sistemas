@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Cadastros</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/reset.css') }}"></link>
+        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/cadastros.css') }}"></link>
+
+    </head>
+    <body>
+        <header class ='cabecalho_'>
+            <div class="caixa">
+                <h1><img src="/static/images/logo_inicio.png"></h1>
+            </div>
+        </header>
+        <main>
+            <ul class ='servicos'>
+                <li>
+                    <h2>Entregador</h2></br>
+                    <img src="/static/images/entrega.png"></br></br>
+                    <p class = 'servico-descricao'>Cadastre-se como entregador PetFriends e ganhe dinheiro realizando entregas de mercadorias! </br></br><a style ="text-decoration:none" href="/cadastro_entregador"> Quero me cadastrar!</a></p>
+                    <!--<p class ="produto-preco">R$ 25,00</p> -->
+                </li>
+                <li>
+                    <h2>Usuário</h2></br>
+                    <img class ="servico-usuarios" src="/static/images/usuario.png"></br></br>
+                    <p class = 'servico-descricao'>Cadastre-se como usuário PetFriends e efetue suas compras totalmente online, onde e quando quiser! </br></br><a style ="text-decoration:none" href ="/cadastro_usuario"> Quero me cadastrar!</a></p>
+                    <!--<p class ="servico-preco">R$ 18,00</p> -->
+                </li>
+                <li>
+                    <h2>Vendedor</h2></br>
+                    <img src="/static/images/vendedor.png"></br></br>
+                    <p class = 'servico-descricao'>Cadastre-se como vendedor PetFriends e realize suas vendas de produtos online, rápido e fácil! </br></br><a style ="text-decoration:none" href="/cadastro_vendedor"> Quero me cadastrar!</a></p>
+                    <!--<p class ="servico-preco">R$ 35,00</p> -->
+                </li>
+            </ul>
+        </main>
+    </body>
+    <footer>
+        <!-- <img src="/static/images/pata-de-cachorro.png"> -->
+        <p class="copyright"> &copy; Copyright Pet Friends - 2021</p>
+    </footer>
+</html>

@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request
 from flask_restful import Api
 from models.usuario import UsuarioModel
-from resources.vendedor import Vendedores, VendedorRegistro, VendedorLogin, VendedorLogout
-from resources.usuario import Usuarios, UsuarioRegistro, UsuarioLogin, UsuarioLogout
-from resources.entregador import Entregadores, EntregadorRegistro, EntregadorLogin, EntregadorLogout
+from resources.vendedor import Vendedores, VendedorConfirmado, VendedorRegistro, VendedorLogin, VendedorLogout
+from resources.usuario import UsuarioConfirmado, Usuarios, UsuarioRegistro, UsuarioLogin, UsuarioLogout
+from resources.entregador import Entregadores, EntregadorConfirmado, EntregadorRegistro, EntregadorLogin, EntregadorLogout
 from werkzeug.security import safe_str_cmp
 
 
@@ -80,6 +80,9 @@ api.add_resource(Entregadores, '/entregador/<int:id_entregador>')
 api.add_resource(EntregadorRegistro, '/entregador_cadastro')  # POST
 api.add_resource(EntregadorLogin, '/entregador_login')  # POST
 api.add_resource(EntregadorLogout, '/logout')  # POST
+api.add_resource(UsuarioConfirmado, '/confirmacao/<int:id_usuario>')  # GET
+api.add_resource(VendedorConfirmado, '/confirmacao_vendedor/<int:id_vendedor>')  # GET
+api.add_resource(EntregadorConfirmado, '/confirmacao_entregador/<int:id_entregador>')  # GET
 
 if __name__ == '__main__':
     from sql_alchemy import banco
