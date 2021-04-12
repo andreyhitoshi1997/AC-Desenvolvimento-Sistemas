@@ -4,7 +4,7 @@
 <head>
     <title>Cadastre-se</title>
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/register.css') }}"></link>
-    </link>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -28,11 +28,15 @@
                     <input type='text' name='cnh_entregador' placeholder='CNH' class="Register-Field" required ></input>
                     <input type='email' name='email_entregador' placeholder='Email' class="Register-Field" required ></input>
                     <input type='password' name='senha_entregador' placeholder='Senha' class="Register-Field" required ></input>
-
+                    <div class="g-recaptcha" data-sitekey="{{ sitekey }}"></div> <br/>
                     <button type="submit" class="Register-Btn">Cadastre-se</button>
-                    {% if message != "" %}
-                        <label class="Register-Error">{{message}}</label>
-                    {% endif %}
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages != "" %}
+                     {% for message in messages %}
+                        <label class="Register-Error">{{messages}}</label>
+                     {% endfor %}
+                      {% endif %}
+                    {% endwith %}
                 </div>
             </form>
         </div>

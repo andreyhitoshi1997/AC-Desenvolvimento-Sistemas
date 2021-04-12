@@ -1,16 +1,51 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, redirect, url_for,get_flashed_messages
 from flask_restful import Api
 from models.usuario import UsuarioModel
 from resources.vendedor import Vendedores, VendedorConfirmado, VendedorRegistro, VendedorLogin, VendedorLogout
 from resources.usuario import UsuarioConfirmado, Usuarios, UsuarioRegistro, UsuarioLogin, UsuarioLogout
 from resources.entregador import Entregadores, EntregadorConfirmado, EntregadorRegistro, EntregadorLogin, EntregadorLogout
 from werkzeug.security import safe_str_cmp
+import requests, json
 
 
 app = Flask(__name__, template_folder='templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 api = Api(app)
+
+
+
+def is_human_vendedor(captcha_response):
+
+        """ Validating recaptcha response from google server
+          Returns True captcha test passed for submitted form else returns False.
+        """
+        secret = SECRET_KEY_VENDEDOR
+        payload = {'response': captcha_response, 'secret': secret}
+        response = requests.post("https://www.google.com/recaptcha/api/siteverify", payload)
+        response_text = json.loads(response.text)
+        return response_text['success']
+
+def is_human_usuario(captcha_response):
+
+        """Validating recaptcha response from google server
+            Returns True captcha test passed for submitted form else returns False."""
+        secret = SECRET_KEY_USUARIO
+        payload = {'response': captcha_response, 'secret': secret}
+        response = requests.post("https://www.google.com/recaptcha/api/siteverify", payload)
+        response_text = json.loads(response.text)
+        return response_text['success']
+
+def is_human_entregador(captcha_response):
+
+        #Validating recaptcha response from google server
+        #Returns True captcha test passed for submitted form else returns False.
+        
+        secret = SECRET_KEY_ENTREGADOR
+        payload = {'response': captcha_response, 'secret': secret}
+        response = requests.post("https://www.google.com/recaptcha/api/siteverify", payload)
+        response_text = json.loads(response.text)
+        return response_text['success']
 
 
 @app.before_first_request
@@ -42,17 +77,58 @@ def cadastros():
 
 @app.route('/cadastro_vendedor')
 def vendedor():
+    if request.method == 'POST':
+        nome_vendedor = request.form['nome_vendedor']
+        telefone_vendedor = request.form['telefone_vendededor']
+        cnpj_vendedor = request.form['cnpj_vendedor']
+        email_vendedor = request.form['email_vendedor']
+        senha_vendedor = request.form['senha_vendedor']
+        captcha_response = request.form['g-recaptcha-response']
+        if is_human_vendedor(captcha_response):
+            status = 'Enviado com sucesso'
+        else:
+            status = 'Im not a robot não pode ficar vazio!.'
+        flash(status)
+        
     return render_template('cadastro_vendedores.html')
 
 
-@app.route('/cadastro_usuario')
+@app.route('/cadastro_usuario',methods=["GET", "POST"])
 def usuario():
+    if request.method == 'POST':
+        nome_usuario = request.form['nome_usuario']
+        telefone_usuario = request.form['telefone_usuario']
+        cpf_usuario = request.form['cpf_usuario']
+        email_usuario = request.form['email_usuario']
+        senha_usuario = request.form['senha_usuario']
+        captcha_response = request.form['g-recaptcha-response']
+        if is_human_usuario(captcha_response):
+            status = 'Enviado com sucesso'
+        else:
+            status = 'Im not a robot não pode ficar vazio!.'
+        flash(status)
     return render_template('cadastro_usuario.html')
 
 
-@app.route('/cadastro_entregador')
+@app.route('/cadastro_entregador', methods=["GET", "POST"])
 def entregador():
-    return render_template('cadastro_entregador.html')
+    
+    if request.method == 'POST':
+        nome_entregador = request.form['nome_entregador']
+        cpf_entregador = request.form['cpf_entregador']
+        telefone_entregador = request.form['telefone_entregador']
+        cnh_entregador = request.form['cnh_entregador']
+        email_usuario = request.form['email_usuario']
+        senha_usuario = request.form['senha_usuario']
+        captcha_response = request.form['g-recaptcha-response']
+        if is_human_entregador(captcha_response):
+             
+            status = 'Enviado com sucesso'
+        else:
+            status = 'Im not a robot não pode ficar vazio!'
+        flash(status)
+        return redirect(url_for('cadastro_entregador'))
+    return render_template('cadastro_entregador.html', sitekey=sitekey)
 
 
 @app.route('/produtos')

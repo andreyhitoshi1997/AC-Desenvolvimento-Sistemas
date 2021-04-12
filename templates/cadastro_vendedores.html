@@ -4,7 +4,7 @@
 <head>
     <title>Cadastre-se</title>
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/register.css') }}"></link>
-    </link>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -27,7 +27,7 @@
                     <input type='text' name='cnpj_vendedor' placeholder='CNPJ' class="Register-Field" required ></input>
                     <input type='email' name='email_vendedor' placeholder='Email' class="Register-Field" required ></input>
                     <input type='password' name='senha_vendedor' placeholder='Senha' class="Register-Field" required ></input>
-
+                    <div class="g-recaptcha" data-sitekey=""></div> <br/>
                     <button type="submit" class="Register-Btn">Cadastre-se</button>
                     {% if message != "" %}
                         <label class="Register-Error">{{message}}</label>

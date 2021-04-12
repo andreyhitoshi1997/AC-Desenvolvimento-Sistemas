@@ -1,7 +1,7 @@
 from operator import imod
 from flask.helpers import url_for
 from sql_alchemy import banco
-from flask import request
+from flask import request, json
 from requests import post
 
 MAILGUN_DOMAIN ='sandbox0d61b2ebba334f26ad71a55b10995ae8.mailgun.org'
@@ -41,8 +41,7 @@ class UsuarioModel(banco.Model):
                         Confirme seu cadastro clicando no link a seguir:<a href="{}">CONFIRMAR EMAIL</a>\
                             </p><html>'.format(link)
                         })
-        
-        
+
 
     def json(self):
         return {

@@ -51,7 +51,7 @@
                         <i class="fas fa-lock icon-modify"></i>
                         <input type="password" id="password" name="senha_usuario" placeholder="Password" required>
                     </label>
-                    
+                    <div class="g-recaptcha" data-sitekey="{{ sitekey }}"></div> <br/> 
                     <button id="signin" class="btn btn-second">Login</button></br>
                     {% if message != "" %}
                         <label class="login_error">{{  message }}</label>
