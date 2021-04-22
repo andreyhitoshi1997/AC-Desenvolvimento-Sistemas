@@ -13,6 +13,11 @@ atributos.add_argument('telefone_entregador', type=str, required=True, help="Ei!
 atributos.add_argument('cnh_entregador', type=str, required=True, help="Ei! a sua 'cnh' é obrigatória!")
 atributos.add_argument('email_entregador', type=str, required=True, help="Ei! o seu 'e-mail' é obrigatório!")
 atributos.add_argument('senha_entregador', type=str, required=True, help="Ei! a sua 'senha' é obrigatória!")
+atributos.add_argument('endereco_entregador', type=str, required=True, help="Ei! o seu 'endereço' é obrigatório!")
+atributos.add_argument('numero_end_entregador', type=str, required=True, help="Ei! o seu 'número de endereço' é obrigatório!")
+atributos.add_argument('complemento_entregador', type=str, required=False)
+atributos.add_argument('bairro_entregador', type=str, required=True, help="Ei! o seu 'bairro' é obrigatório!")
+atributos.add_argument('cep_entregador', type=str, required=True, help="Ei! o seu 'cep' é obrigatório!")
 atributos.add_argument('ativado', type=bool)
 
 
@@ -21,12 +26,13 @@ atributos_login.add_argument('email_entregador', type=str, required=True, help="
 atributos_login.add_argument('senha_entregador', type=str, required=True, help="Ei! a sua 'senha' é obrigatória!")
 atributos.add_argument('ativado', type=bool)
 
+
 class Entregadores(Resource):
     def get(self, id_entregador):
         entregador = EntregadorModel.achar_entregador(id_entregador)
         if entregador:
             return entregador.json()
-        return make_response(render_template(".html", message= "Entregador não encontrado."), 404)
+        return make_response(render_template("home.html", message="Entregador não encontrado."), 404)
 
     def put(self, id_entregador):
         dados = atributos.parse_args()
@@ -37,14 +43,14 @@ class Entregadores(Resource):
             return {"message": "Entregador atualizado com sucesso!"}, 200
         entregador = EntregadorModel(**dados)
         entregador.salvar_entregador()
-        return make_response(render_template(".html", message= "Entregador criado com sucesso!"), 201)
+        return make_response(render_template("home.html", message="Entregador criado com sucesso!"), 201)
 
     def delete(self, id_entregador):
         entregador = EntregadorModel.achar_entregador(id_entregador)
         if entregador:
             entregador.deletar_entregador()
-            return make_response(render_template(".html", message= 'Entregador deletado com sucesso!'), 200)
-        return make_response(render_template(".html", message= 'Entregador não encontrado!'), 404)
+            return make_response(render_template("home.html", message='Entregador deletado com sucesso!'), 200)
+        return make_response(render_template("home.html", message='Entregador não encontrado!'), 404)
 
 
 class EntregadorRegistro(Resource):
@@ -60,8 +66,8 @@ class EntregadorRegistro(Resource):
         except:
             entregador.deletar_entregador()
             traceback.print_exc()
-            return make_response(render_template("cadastro_entregador.html",message= 'Erro interno de servidor'), 500)
-        return make_response(render_template("login.html", message= "Sucesso! Cadastro pendente de confirmação via email"), 201)
+            return make_response(render_template("cadastro_entregador.html", message='Erro interno de servidor'), 500)
+        return make_response(render_template("login.html", message="Sucesso! Cadastro pendente de confirmação via email"), 201)
 
 
 class EntregadorLogin(Resource):
@@ -71,10 +77,9 @@ class EntregadorLogin(Resource):
         entregador = EntregadorModel.achar_por_login(dados['email_entregador'])
         if entregador and safe_str_cmp(entregador.senha_entregador, dados['senha_entregador']):
             if entregador.ativado:
-                # token_de_acesso = create_access_token(identity=user.id_usuario)
-                return make_response(render_template("home.html",message= 'Login realizado com sucesso!'), 200)
-            return make_response(render_template("login.html", message= 'Usuário não confirmado'), 400)
-        return make_response(render_template("login.html", message= 'Usuário ou senha incorretos.'), 401)
+                return make_response(render_template("home.html", message='Login realizado com sucesso!'), 200)
+            return make_response(render_template("login.html", message='Usuário não confirmado'), 400)
+        return make_response(render_template("login.html", message='Usuário ou senha incorretos.'), 401)
 
 
 class EntregadorLogout(Resource):
@@ -82,8 +87,6 @@ class EntregadorLogout(Resource):
         r = make_response(render_template("cadastro_entregador.html", message="Deslogou com sucesso!"))
         r.set_cookie("email_entregador", "")
         r.set_cookie("senha_entregador", "")
-        # jwt_id = get_raw_jwt()['jti']  # JWT Token Identifier
-        # BLACKLIST.add(jwt_id)
         return r
 
 
@@ -97,6 +100,5 @@ class EntregadorConfirmado(Resource):
 
         entregador.ativado = True
         entregador.salvar_entregador()
-        #return{'message':'Usuário confirmado com sucesso'}, 200
         headers = {'Content-Type': 'text/html'}
         return make_response(render_template('usuario_confirmado.html'), 200, headers)

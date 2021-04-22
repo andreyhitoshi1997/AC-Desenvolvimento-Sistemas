@@ -2,11 +2,12 @@ from sql_alchemy import banco
 from flask import url_for
 from flask import request
 from requests import post
+import mailgun
 
-MAILGUN_DOMAIN ='sandbox0d61b2ebba334f26ad71a55b10995ae8.mailgun.org'
-MAILGUN_API_KEY = 'cabaf6f4cee771af940f6c2bc3ddda22-b6d086a8-040f8119'
-FROM_TITLE = 'NO-REPLY'
-FROM_EMAIL = 'no-reply@petfriends.com'
+domain = mailgun.MAILGUN_DOMAIN 
+site_key = mailgun.MAILGUN_API_KEY
+from_title = mailgun.FROM_TITLE
+from_email = mailgun.FROM_EMAIL
 
 class VendedorModel(banco.Model):
     __tablename__ = 'vendedores'
@@ -16,22 +17,32 @@ class VendedorModel(banco.Model):
     cnpj_vendedor = banco.Column(banco.String(14))
     email_vendedor = banco.Column(banco.String(50))
     senha_vendedor = banco.Column(banco.String(30))
+    endereco_vendedor = banco.Column(banco.String(40))
+    numero_end_vendedor = banco.Column(banco.String(10))
+    complemento_vendedor = banco.Column(banco.String(30))
+    bairro_vendedor = banco.Column(banco.String(20))
+    cep_vendedor = banco.Column(banco.String(8))
     ativado = banco.Column(banco.Boolean, default=False)
 
-    def __init__(self, nome_vendedor, telefone_vendedor, cnpj_vendedor, email_vendedor, senha_vendedor, ativado):
+    def __init__(self, nome_vendedor, telefone_vendedor, cnpj_vendedor, email_vendedor, senha_vendedor, endereco_vendedor, numero_end_vendedor, complemento_vendedor, bairro_vendedor, cep_vendedor, ativado):
         self.nome_vendedor = nome_vendedor
         self.telefone_vendedor = telefone_vendedor
         self.cnpj_vendedor = cnpj_vendedor
         self.email_vendedor = email_vendedor
         self.senha_vendedor = senha_vendedor
+        self.endereco_vendedor = endereco_vendedor
+        self.numero_end_vendedor = numero_end_vendedor
+        self.complemento_vendedor = complemento_vendedor
+        self.bairro_vendedor = bairro_vendedor
+        self.cep_vendedor = cep_vendedor
         self.ativado = ativado
 
     def enviar_email_confirmacao_vendedor(self):
         #http://127.0.0.1:5000/confirmacao_vendedor/
         link_vendedor = request.url_root[:-1] + url_for('vendedorconfirmado', id_vendedor=self.id_vendedor)
-        return post('https://api.mailgun.net/v3/{}/messages'.format(MAILGUN_DOMAIN),
-                    auth=('api', MAILGUN_API_KEY),
-                    data={'from': '{} <{}>'.format(FROM_TITLE, FROM_EMAIL),
+        return post('https://api.mailgun.net/v3/{}/messages'.format(domain),
+                    auth=('api', site_key),
+                    data={'from': '{} <{}>'.format(from_title, from_email),
                     'to': self.email_vendedor,
                     'subject': 'Confirmação de Cadastro',
                     'text': 'Confirme seu cadastro clicando no link a seguir: {}'.format(link_vendedor),
@@ -42,14 +53,17 @@ class VendedorModel(banco.Model):
 
     def json(self):
         return {
-            'id_vendedor': self.id_vendedor,
             'nome_vendedor': self.nome_vendedor,
             'telefone_vendedor': self.telefone_vendedor,
             'cnpj_vendedor': self.cnpj_vendedor,
             'email_vendedor': self.email_vendedor,
+            'endereco_vendedor': self.endereco_vendedor,
+            'numero_end_vendedor': self.numero_end_vendedor,
+            'complemento_vendedor': self.complemento_vendedor,
+            'bairro_vendedor': self.bairro_vendedor,
+            'cep_vendedor': self.cep_vendedor,
             'ativado': self.ativado
         }
-
 
     @classmethod
     def achar_vendedor(cls, id_vendedor):
@@ -69,12 +83,18 @@ class VendedorModel(banco.Model):
         banco.session.add(self)
         banco.session.commit()
 
-    def atualizar_vendedor(self, nome_vendedor, telefone_vendedor, cnpj_vendedor, email_vendedor, senha_vendedor):
+    def atualizar_vendedor(self, nome_vendedor, telefone_vendedor, cnpj_vendedor, email_vendedor, senha_vendedor, endereco_vendedor, numero_end_vendedor, complemento_vendedor, bairro_vendedor, cep_vendedor, ativado):
         self.nome_vendedor = nome_vendedor
         self.telefone_vendedor = telefone_vendedor
         self.cnpj_vendedor = cnpj_vendedor
         self.email_vendedor == email_vendedor
         self.senha_vendedor == senha_vendedor
+        self.endereco_vendedor = endereco_vendedor
+        self.numero_end_vendedor = numero_end_vendedor
+        self.complemento_vendedor = complemento_vendedor
+        self.bairro_vendedor = bairro_vendedor
+        self.cep_vendedor = cep_vendedor
+        self.ativado == ativado
 
     def deletar_vendedor(self):
         banco.session.delete(self)

@@ -12,7 +12,13 @@ atributos.add_argument('telefone_usuario', type=str, required=True, help="Ei! o 
 atributos.add_argument('cpf_usuario', type=str, required=True, help="Ei! o seu 'cpf' é obrigatório!")
 atributos.add_argument('email_usuario', type=str, required=True, help="Ei! o seu 'e-mail' é obrigatório!")
 atributos.add_argument('senha_usuario', type=str, required=True, help="Ei! a sua 'senha' é obrigatória!")
+atributos.add_argument('endereco_usuario', type=str, required=True, help="Ei! o seu 'endereço' é obrigatório!")
+atributos.add_argument('numero_end_usuario', type=str, required=True, help="Ei! o seu 'número de endereço' é obrigatório!")
+atributos.add_argument('complemento_usuario', type=str, required=False)
+atributos.add_argument('bairro_usuario', type=str, required=True, help="Ei! o seu 'bairro' é obrigatório!")
+atributos.add_argument('cep_usuario', type=str, required=True, help="Ei! o seu 'cep' é obrigatório!")
 atributos.add_argument('ativado', type=bool)
+
 atributos_login = reqparse.RequestParser()
 atributos_login.add_argument('email_usuario', type=str, required=True, help="Ei! o seu 'e-mail' é obrigatório!")
 atributos_login.add_argument('senha_usuario', type=str, required=True, help="Ei! a sua 'senha' é obrigatória!")
@@ -24,7 +30,7 @@ class Usuarios(Resource):
         usuario = UsuarioModel.achar_usuario(id_usuario)
         if usuario:
             return usuario.json()
-        return make_response(render_template(".html" , message= "Usuário não encontrado."), 404)
+        return make_response(render_template("home.html", message="Usuário não encontrado."), 404)
 
     def put(self, id_usuario):
         dados = atributos.parse_args()
@@ -35,14 +41,14 @@ class Usuarios(Resource):
             return {"message": "Usuário atualizado com sucesso!"}, 200
         usuario = UsuarioModel(**dados)
         usuario.salvar_usuario()
-        return make_response(render_template(".html", message= "Vendedor criado com sucesso!"), 201)
+        return make_response(render_template("home.html", message="Vendedor criado com sucesso!"), 201)
 
     def delete(self, id_usuario):
         user = UsuarioModel.achar_usuario(id_usuario)
         if user:
             user.deletar_usuario()
-            return make_response(render_template(".html", message= 'Usuário deletado com sucesso!'), 200)
-        return make_response(render_template(".html", message= 'Usuário não encontrado!'), 404)
+            return make_response(render_template("home.html", message='Usuário deletado com sucesso!'), 200)
+        return make_response(render_template("home.html", message='Usuário não encontrado!'), 404)
 
 
 class UsuarioRegistro(Resource):
@@ -59,7 +65,7 @@ class UsuarioRegistro(Resource):
             user.deletar_usuario()
             traceback.print_exc()
             return make_response(render_template("cadastro_usuario.html", message='Erro interno de servidor'), 500)
-        return make_response(render_template("login.html", message= "Sucesso! Cadastro pendente de confirmação via email"), 201)
+        return make_response(render_template("login.html", message="Sucesso! Cadastro pendente de confirmação via email"), 201)
 
 
 class UsuarioLogin(Resource):
@@ -69,8 +75,7 @@ class UsuarioLogin(Resource):
         user = UsuarioModel.achar_por_login(dados['email_usuario'])
         if user and safe_str_cmp(user.senha_usuario, dados['senha_usuario']):
             if user.ativado:
-                # token_de_acesso = create_access_token(identity=user.id_usuario)
-                return make_response(render_template("home.html", message= 'Login realizado com sucesso!'), 200)
+                return make_response(render_template("home.html", message='Login realizado com sucesso!'), 200)
             return make_response(render_template("login.html", message='Usuário não confirmado'), 400)
         return make_response(render_template("login.html", message='Usuário ou senha incorretos.'), 401)
 
@@ -95,6 +100,5 @@ class UsuarioConfirmado(Resource):
 
         user.ativado = True
         user.salvar_usuario()
-        #return{'message':'Usuário confirmado com sucesso'}, 200
         headers = {'Content-Type': 'text/html'}
         return make_response(render_template('usuario_confirmado.html', email='email_usuario'), 200, headers)
