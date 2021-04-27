@@ -11,12 +11,16 @@ from werkzeug.security import safe_str_cmp
 import secretkeys
 import requests
 import json
+import pagseguro
 
 
 app = Flask(__name__, template_folder='templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 api = Api(app)
+pag_seguro = pagseguro.pg
+config = {'sandbox': True}
+
 
 
 def is_human_vendedor(captcha_response):

@@ -13,6 +13,7 @@ atributos.add_argument('preco_produto', type=float, required=True, help="Ei! o '
 atributos.add_argument('tipo_produto', type=str, required=True, help="Ei! o 'tipo' é obrigatório!")
 atributos.add_argument('filtro_produto', type=str, required=True, help="Ei! o 'filtro' é obrigatório!")
 atributos.add_argument('quantidade_produto', type=str, required=True, help="Ei! a 'quantidade' é obrigatória!")
+atributos.add_argument('peso_produto', type=float, required=True, help="Ei! o 'peso_produto' é obrigatório!")
 
 
 class Produto(Resource):

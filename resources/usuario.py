@@ -17,6 +17,8 @@ atributos.add_argument('numero_end_usuario', type=str, required=True, help="Ei! 
 atributos.add_argument('complemento_usuario', type=str, required=False)
 atributos.add_argument('bairro_usuario', type=str, required=True, help="Ei! o seu 'bairro' é obrigatório!")
 atributos.add_argument('cep_usuario', type=str, required=True, help="Ei! o seu 'cep' é obrigatório!")
+atributos.add_argument('cidade_usuario', type=str, required=True, help="Ei! a sua 'cidade' é obrigatório!")
+atributos.add_argument('estado_usuario', type=str, required=True, help="Ei! o seu 'estado' é obrigatório!")
 atributos.add_argument('ativado', type=bool)
 
 atributos_login = reqparse.RequestParser()
@@ -24,7 +26,7 @@ atributos_login.add_argument('email_usuario', type=str, required=True, help="Ei!
 atributos_login.add_argument('senha_usuario', type=str, required=True, help="Ei! a sua 'senha' é obrigatória!")
 atributos_login.add_argument('ativado', type=bool)
 
-
+i
 class Usuarios(Resource):
     def get(self, id_usuario):
         usuario = UsuarioModel.achar_usuario(id_usuario)

@@ -11,8 +11,9 @@ class ProdutosModel(banco.Model):
     tipo_produto = banco.Column(banco.String(15))
     filtro_produto = banco.Column(banco.String(10))
     quantidade_produto = banco.Column(banco.String(10))
+    peso_produto = banco.Column(banco.Float(precision=2))
 
-    def __init__(self, nome_produto, codigo_produto, descricao_produto, preco_produto, tipo_produto, filtro_produto, quantidade_produto):
+    def __init__(self, nome_produto, codigo_produto, descricao_produto, preco_produto, tipo_produto, filtro_produto, quantidade_produto, peso_produto):
         self.nome_produto = nome_produto
         self.codigo_produto = codigo_produto
         self.descricao_produto = descricao_produto
@@ -20,6 +21,7 @@ class ProdutosModel(banco.Model):
         self.tipo_produto = tipo_produto
         self.filtro_produto = filtro_produto
         self.quantidade_produto = quantidade_produto
+        self.peso_produto = peso_produto
 
     def json(self):
         return {
@@ -29,7 +31,8 @@ class ProdutosModel(banco.Model):
             'preco_produto': self.preco_produto,
             'tipo_produto': self.tipo_produto,
             'filtro_produto': self.filtro_produto,
-            'quantidade_produto': self.quantidade_produto
+            'quantidade_produto': self.quantidade_produto,
+            'peso_produto': self.peso_produto
         }
 
     @classmethod
@@ -65,7 +68,7 @@ class ProdutosModel(banco.Model):
         banco.session.add(self)
         banco.session.commit()
 
-    def atualizar_produto(self, nome_produto, codigo_produto, descricao_produto, preco_produto, tipo_produto, filtro_produto, quantidade_produto):
+    def atualizar_produto(self, nome_produto, codigo_produto, descricao_produto, preco_produto, tipo_produto, filtro_produto, quantidade_produto, peso_produto):
         self.nome_produto = nome_produto
         self.codigo_produto = codigo_produto
         self.descricao_produto = descricao_produto
@@ -73,6 +76,10 @@ class ProdutosModel(banco.Model):
         self.tipo_produto = tipo_produto
         self.filtro_produto = filtro_produto
         self.quantidade_produto = quantidade_produto
+        self.peso_produto = peso_produto
+
+    def quantidade_selecionada(self, quantidade):
+        return quantidade
 
     def deletar_produto(self):
         banco.session.delete(self)

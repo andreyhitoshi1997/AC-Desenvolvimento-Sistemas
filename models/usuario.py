@@ -14,7 +14,8 @@ class UsuarioModel(banco.Model):
     __tablename__ = 'usuarios'
     id_usuario = banco.Column(banco.Integer, primary_key=True)
     nome_usuario = banco.Column(banco.String(50))
-    telefone_usuario = banco.Column(banco.String(11))
+    telefone_usuario = banco.Column(banco.String(9))
+    ddd_usuario = banco.Column(banco.String(2))
     cpf_usuario = banco.Column(banco.String(11))
     email_usuario = banco.Column(banco.String(50), nullable=False, unique=True)
     senha_usuario = banco.Column(banco.String(30), nullable=False)
@@ -23,11 +24,14 @@ class UsuarioModel(banco.Model):
     complemento_usuario = banco.Column(banco.String(30))
     bairro_usuario = banco.Column(banco.String(20))
     cep_usuario = banco.Column(banco.String(8))
+    cidade_usuario = banco.Column(banco.String(20))
+    estado_usuario = banco.Column(banco.String(15))
     ativado = banco.Column(banco.Boolean, default=False)
 
-    def __init__(self, nome_usuario, telefone_usuario, cpf_usuario, email_usuario, senha_usuario, endereco_usuario, numero_end_usuario, complemento_usuario, bairro_usuario, cep_usuario, ativado):
+    def __init__(self, nome_usuario, telefone_usuario, ddd_usuario ,cpf_usuario, email_usuario, senha_usuario, endereco_usuario, numero_end_usuario, complemento_usuario, bairro_usuario, cep_usuario, cidade_usuario, estado_usuario, ativado):
         self.nome_usuario = nome_usuario
         self.telefone_usuario = telefone_usuario
+        self.ddd_usuario = ddd_usuario
         self.cpf_usuario = cpf_usuario
         self.email_usuario = email_usuario
         self.senha_usuario = senha_usuario
@@ -36,6 +40,8 @@ class UsuarioModel(banco.Model):
         self.complemento_usuario = complemento_usuario
         self.bairro_usuario = bairro_usuario
         self.cep_usuario = cep_usuario
+        self.cidade_usuario = cidade_usuario
+        self.estado_usuario = estado_usuario
         self.ativado = ativado
 
     def enviar_confirmacao_email(self):
@@ -56,6 +62,7 @@ class UsuarioModel(banco.Model):
         return {
             'nome_usuario': self.nome_usuario,
             'telefone_usuario': self.telefone_usuario,
+            'ddd_usuario': self.ddd_usuario,
             'cpf_usuario': self.cpf_usuario,
             'email_usuario': self.email_usuario,
             'endereco_usuario': self.endereco_usuario,
@@ -63,6 +70,8 @@ class UsuarioModel(banco.Model):
             'complemento_usuario': self.complemento_usuario,
             'bairro_usuario': self.bairro_usuario,
             'cep_usuario': self.cep_usuario,
+            'cidade_usuario': self.cidade_usuario,
+            'estado_usuario': self.estado_usuario,
             'ativado': self.ativado
                 }
 
@@ -84,9 +93,10 @@ class UsuarioModel(banco.Model):
         banco.session.add(self)
         banco.session.commit()
 
-    def atualizar_usuario(self, nome_usuario, telefone_usuario, cpf_usuario, email_usuario, senha_usuario, endereco_usuario, numero_end_usuario, complemento_usuario, bairro_usuario, cep_usuario, ativado):
+    def atualizar_usuario(self, nome_usuario, telefone_usuario, ddd_usuario, cpf_usuario, email_usuario, senha_usuario, endereco_usuario, numero_end_usuario, complemento_usuario, bairro_usuario, cep_usuario, cidade_usuario, estado_usuario, ativado):
         self.nome_usuario = nome_usuario
         self.telefone_usuario = telefone_usuario
+        self.ddd_usuario = ddd_usuario
         self.cpf_usuario = cpf_usuario
         self.email_usuario == email_usuario
         self.senha_usuario == senha_usuario
@@ -95,6 +105,8 @@ class UsuarioModel(banco.Model):
         self.complemento_usuario = complemento_usuario
         self.bairro_usuario = bairro_usuario
         self.cep_usuario = cep_usuario
+        self.cidade_usuario = cidade_usuario
+        self.estado_usuario = estado_usuario
         self.ativado == ativado
 
     def deletar_usuario(self):
