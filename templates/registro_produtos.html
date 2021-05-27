@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Cadastre seu produto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/register.css') }}"></link>
+    
+</head>
+
+<body>
+    <div class='linha'>
+        <div class='coluna-50'>
+            <img id="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Background. Imagem Logo PetFrien"></img>
+            <strong>
+                <h1 class='txt'>Cadastro de produtos</h1>
+            </strong>
+            
+        </div>
+        <div class='coluna-50'>
+            <form class="Register" action="/produto/registro" method="POST">
+                <div class="Register-group">
+                    <h3 class="title">Cadastro de Produto</h3>
+                    <input type='text' name='nome_produto' placeholder='Nome do Produto' class="Register-Field" required />
+                    <input type='text' name='codigo_produto' placeholder='Código do Produto' class="Register-Field"  />
+                    <input type='text' name='descricao_produto' placeholder='Descrição do Produto' class="Register-Field" required />
+                    <input type='text' name='preco_produto' placeholder='Preço' class="Register-Field" required />
+                    <label for=' tipo_produto'>Tipo Produto:
+                        <select name='tipo_produto' id="tipo_produto">
+                            <option value =''>Selecione o Tipo</option>
+                            <option value ='alimentacao'>Alimentação</option>
+                            <option value ='banho'>Banho</option>
+                            <option value ='lazer'>Lazer</option>
+                            <option value ='roupas'>Roupas</option>
+                            <option value ='remedios'>Remédios</option>
+                        </select></label></br>
+                    <label for='filtro_produto'>Filtro por animais:
+                        <select name='filtro_produto' id="filtro_produto">
+                            <option value =''>Selecione sua categoria</option>
+                            <option value ='cachorro'>Cachorro</option>
+                            <option value ='gato'>Gato</option>
+                            <option value ='peixe'>Peixe</option>
+                            <option value ='outros'>Outros</option>
+                        </select>
+                        </label>
+                    <input type='text' name='quantidade_produto' placeholder='Quantidade' class="Register-Field" required />
+                    <button type="submit" class="Register-Btn">Cadastre-se</button>
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages != "" %}
+                     {% for codigo in codigo_produto %}
+                        <label class="codigo_produto">{{codigo}}</label>
+                     {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

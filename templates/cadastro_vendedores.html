@@ -27,7 +27,12 @@
                     <input type='text' name='cnpj_vendedor' placeholder='CNPJ' class="Register-Field" required ></input>
                     <input type='email' name='email_vendedor' placeholder='Email' class="Register-Field" required ></input>
                     <input type='password' name='senha_vendedor' placeholder='Senha' class="Register-Field" required ></input>
-                    <div class="g-recaptcha" data-sitekey=""></div> <br/>
+                    <input type='text' name='endereco_vendedor' placeholder='Endereço' class="Register-Field" required ></input>
+                    <input type='text' name='numero_end_vendedor' placeholder='Nº' class="Register-Field" required ></input>
+                    <input type='text' name='complemento_vendedor' placeholder='Complemento' class="Register-Field"  ></input>
+                    <input type='text' name='bairro_vendedor' placeholder='Bairro' class="Register-Field" required ></input>
+                    <input type='text' name='cep_vendedor' placeholder='CEP' class="Register-Field" required ></input>
+                    <div class="g-recaptcha" data-sitekey="{{ sitekey }}"></div> <br/>
                     <button type="submit" class="Register-Btn">Cadastre-se</button>
                     {% if message != "" %}
                         <label class="Register-Error">{{message}}</label>

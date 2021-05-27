@@ -99,7 +99,7 @@ def vendedor():
         else:
             status = 'Im not a robot não pode ficar vazio!.'
         flash(status)
-    return render_template('cadastro_vendedores.html')
+    return render_template('cadastro_vendedores.html', sitekey=secretkeys.sitekey_vendedor)
 
 
 @app.route('/cadastro_usuario', methods=["GET", "POST"])
@@ -122,7 +122,7 @@ def usuario():
         else:
             status = 'Im not a robot não pode ficar vazio!.'
         flash(status)
-    return render_template('cadastro_usuario.html')
+    return render_template('cadastro_usuario.html',sitekey=secretkeys.sitekey_usuario)
 
 
 @app.route('/cadastro_entregador', methods=["GET", "POST"])
@@ -147,13 +147,18 @@ def entregador():
             status = 'Im not a robot não pode ficar vazio!'
         flash(status)
         return redirect(url_for('cadastro_entregador'))
-    return render_template('cadastro_entregador.html', sitekey=secretkeys.SECRET_KEY_ENTREGADOR)
+    return render_template('cadastro_entregador.html', sitekey=secretkeys.sitekey_entregador)
 
 
 @app.route('/produtos')
 def produtos():
     # if login_ok(request):
     return render_template('produtos.html')
+
+
+@app.route('/produtos/registro')
+def registro():
+    return render_template('registro_produtos.html')
 
 
 def login_ok(req):

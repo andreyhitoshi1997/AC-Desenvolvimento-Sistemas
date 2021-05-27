@@ -3,11 +3,12 @@ from flask import render_template
 from models.produtos import ProdutosModel
 from flask.helpers import make_response
 from werkzeug.security import safe_str_cmp
+import random
 # import traceback
 
 atributos = reqparse.RequestParser()
 atributos.add_argument('nome_produto', type=str, required=True, help="Ei! o 'nome' é obrigatório!")
-atributos.add_argument('codigo_produto', type=int, required=True, help="Ei! o seu 'código' é obrigatório!")
+atributos.add_argument('codigo_produto', type=str, required=True, help="Ei! o 'Codigo' é obrigatório!")
 atributos.add_argument('descricao_produto', type=str, required=False)
 atributos.add_argument('preco_produto', type=float, required=True, help="Ei! o 'preço' é obrigatório!")
 atributos.add_argument('tipo_produto', type=str, required=True, help="Ei! o 'tipo' é obrigatório!")

@@ -1,4 +1,5 @@
 from sql_alchemy import banco
+import random
 
 
 class ProdutosModel(banco.Model):
@@ -52,14 +53,13 @@ class ProdutosModel(banco.Model):
     # @classmethod
     # def listar_produtos_busca(cls, nome_produto):
 
-    """
-        @classmethod
-        def listar_produtos_especifico(cls, filtro_produto):
-            produto_especifico = cls.query.filter_by(filtro_produto=filtro_produto)
-            if produto_especifico:
-                return produto_especifico
-            return None
-    """
+
+    @classmethod
+    def listar_produtos_especifico(cls, filtro_produto):
+        produto_especifico = cls.query.filter_by(filtro_produto=filtro_produto)
+        if produto_especifico:
+            return produto_especifico
+        return None
 
     def salvar_produto(self):
         banco.session.add(self)
