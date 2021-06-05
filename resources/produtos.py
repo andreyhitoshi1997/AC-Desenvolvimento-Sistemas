@@ -4,6 +4,7 @@ from models.produtos import ProdutosModel
 from flask.helpers import make_response
 from werkzeug.security import safe_str_cmp
 import random
+import sqlite3
 # import traceback
 
 atributos = reqparse.RequestParser()
@@ -49,6 +50,23 @@ class ProdutosRegistro(Resource):
 class ProdutosBuscaSimples(Resource):
     def get(self):
         return {'produto': [produto.json() for produto in ProdutosModel.query.all()]}
+
+
+def listar_produtos():
+    banco = sqlite3.connect("banco.db")
+    cursor = banco.cursor()
+    consulta = "SELECT nome_produto,preco_produto,descricao_produto, tipo_produto, filtro_produto FROM produto"
+    cursor.execute(consulta)
+    resultado = cursor.fetchall()
+    produtos = []
+    for linha in resultado:
+        produtos.append({
+            'nome_produto': linha[0],
+            'preco_produto': linha[1],
+            'descricao_produto': linha[2],
+            'tipo_produto': linha[3],
+            'filtro_produto': linha[4]})
+    return produtos
 
 
 """

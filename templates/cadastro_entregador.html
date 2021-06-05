@@ -4,6 +4,8 @@
 <head>
     <title>Cadastre-se</title>
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/register.css') }}"></link>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
@@ -23,16 +25,16 @@
                 <div class="Register-group">
                     <h3 class="title">Crie sua conta</h3>
                     <input type='text' name='nome_entregador' placeholder='Nome' class="Register-Field" required />
-                    <input type='text' name='cpf_entregador' placeholder='CPF' class="Register-Field" required ></input>
-                    <input type='text' name='telefone_entregador' placeholder='Telefone' class="Register-Field" required ></input>
-                    <input type='text' name='cnh_entregador' placeholder='CNH' class="Register-Field" required ></input>
-                    <input type='email' name='email_entregador' placeholder='Email' class="Register-Field" required ></input>
-                    <input type='password' name='senha_entregador' placeholder='Senha' class="Register-Field" required ></input>
-                    <input type='text' name='endereco_entregador' placeholder='Endereço' class="Register-Field" required ></input>
-                    <input type='text' name='numero_end_entregador' placeholder='Nº' class="Register-Field" required ></input>
-                    <input type='text' name='complemento_entregador' placeholder='Complemento' class="Register-Field"  ></input>
-                    <input type='text' name='bairro_entregador' placeholder='Bairro' class="Register-Field" required ></input>
-                    <input type='text' name='cep_entregador' placeholder='CEP' class="Register-Field" required ></input>
+                    <input type='text' name='cpf_entregador' placeholder='CPF' class="Register-Field" id='cpf_entregador' required autocomplete="off" maxlength="14" ></input>
+                    <input type='text' name='telefone_entregador' placeholder='Telefone' class="Register-Field" id='telefone_entregador' maxlength="14" required autocomplete="off" ></input>
+                    <input type='text' name='cnh_entregador' placeholder='CNH' class="Register-Field" id ='cnh_entregador'required autocomplete="off" ></input>
+                    <input type='email' name='email_entregador' placeholder='Email' class="Register-Field" required autocomplete="off" ></input>
+                    <input type='password' name='senha_entregador' placeholder='Senha' class="Register-Field"  id='senha_entregador'required minlength="8" maxlength="16" ></input>
+                    <input type='text' name='endereco_entregador' placeholder='Endereço' class="Register-Field" required autocomplete="off" ></input>
+                    <input type='text' name='numero_end_entregador' placeholder='Nº' class="Register-Field" required  autocomplete="off"></input>
+                    <input type='text' name='complemento_entregador' placeholder='Complemento' class="Register-Field" autocomplete="off"  ></input>
+                    <input type='text' name='bairro_entregador' placeholder='Bairro' class="Register-Field" required autocomplete="off"></input>
+                    <input type='text' name='cep_entregador' placeholder='CEP' class="Register-Field" required autocomplete="off" maxlength="9" ></input>
                     <div class="g-recaptcha" data-sitekey="{{ sitekey }}"></div> <br/>
                     <button type="submit" class="Register-Btn">Cadastre-se</button>
                     {% with messages = get_flashed_messages() %}
@@ -46,6 +48,15 @@
             </form>
         </div>
     </div>
+    
 </body>
+<script>
+    $(document).ready(function(){
+        $('#cpf_entregador').mask('000.000.000-00');
+        $('#telefone_entregador').mask('(00)00000-0000');
+        $('#cep_entregador').mask('00000-000');
+        
 
+    })
+</script>
 </html>

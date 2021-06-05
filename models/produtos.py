@@ -61,6 +61,7 @@ class ProdutosModel(banco.Model):
             return produto_especifico
         return None
 
+
     def salvar_produto(self):
         banco.session.add(self)
         banco.session.commit()

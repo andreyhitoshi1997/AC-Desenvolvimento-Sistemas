@@ -1,3 +1,4 @@
+from werkzeug.exceptions import PreconditionRequired
 from models.entregador import EntregadorModel
 from models.vendedor import VendedorModel
 from flask import Flask, render_template, request, flash, redirect, url_for
@@ -6,7 +7,7 @@ from models.usuario import UsuarioModel
 from resources.vendedor import Vendedores, VendedorConfirmado, VendedorRegistro, VendedorLogin, VendedorLogout
 from resources.usuario import UsuarioConfirmado, Usuarios, UsuarioRegistro, UsuarioLogin, UsuarioLogout
 from resources.entregador import Entregadores, EntregadorConfirmado, EntregadorRegistro, EntregadorLogin, EntregadorLogout
-from resources.produtos import Produto, ProdutosRegistro, ProdutosBuscaSimples
+from resources.produtos import Produto, ProdutosRegistro, ProdutosBuscaSimples, listar_produtos
 from werkzeug.security import safe_str_cmp
 import secretkeys
 import requests
@@ -152,8 +153,9 @@ def entregador():
 
 @app.route('/produtos')
 def produtos():
+    produtos = listar_produtos()
     # if login_ok(request):
-    return render_template('produtos.html')
+    return render_template('produtos.html', produtos=produtos)
 
 
 @app.route('/produtos/registro')
