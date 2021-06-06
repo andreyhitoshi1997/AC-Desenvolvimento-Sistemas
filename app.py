@@ -1,7 +1,7 @@
 from werkzeug.exceptions import PreconditionRequired
 from models.entregador import EntregadorModel
 from models.vendedor import VendedorModel
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory
 from flask_restful import Api
 from models.usuario import UsuarioModel
 from resources.vendedor import Vendedores, VendedorConfirmado, VendedorRegistro, VendedorLogin, VendedorLogout
@@ -12,6 +12,7 @@ from werkzeug.security import safe_str_cmp
 import secretkeys
 import requests
 import json
+import werkzeug
 
 
 app = Flask(__name__, template_folder='templates')
@@ -65,9 +66,10 @@ def home():
 
 @app.route('/main_home')
 def main_home():
-    # if login_ok(request):
-    return render_template('home_login.html')
-    # return render_template('login.html', message="Sem autorização")
+
+    if login_ok_vend(request):
+        return render_template('home_login.html')
+    return render_template('login.html', message="Sem autorização")
 
 
 @app.route('/')
@@ -154,12 +156,15 @@ def entregador():
 @app.route('/produtos')
 def produtos():
     produtos = listar_produtos()
-    # if login_ok(request):
+    #if login_ok(request):
     return render_template('produtos.html', produtos=produtos)
 
 
 @app.route('/produtos/registro')
 def registro():
+    #logado = login_ok()
+    #if logado is None:
+        #return render_template('home.html')
     return render_template('registro_produtos.html')
 
 
@@ -167,6 +172,13 @@ def login_ok(req):
     login = req.cookies.get("login")
     senha = req.cookies.get("senha")
     user = UsuarioModel.achar_por_login(login)
+    return user is not None and safe_str_cmp(user.senha, senha)
+
+
+def login_ok_vend(request):
+    login = request.cookies.get("login")
+    senha = request.cookies.get("senha")
+    user = VendedorModel.achar_por_login(login)
     return user is not None and safe_str_cmp(user.senha, senha)
 
 

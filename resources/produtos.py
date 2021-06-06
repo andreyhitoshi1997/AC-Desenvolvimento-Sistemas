@@ -1,10 +1,11 @@
 from flask_restful import Resource, reqparse
-from flask import render_template
+from flask import render_template,request
 from models.produtos import ProdutosModel
 from flask.helpers import make_response
 from werkzeug.security import safe_str_cmp
 import random
 import sqlite3
+import os 
 # import traceback
 
 atributos = reqparse.RequestParser()
@@ -68,6 +69,24 @@ def listar_produtos():
             'filtro_produto': linha[4]})
     return produtos
 
+
+def extensao_arquivo(filename):
+    if '.' not in filename: 
+        return ''
+    return filename.rsplit('.', 1)[1].lower()
+
+
+def salvar_arquivo_upload():
+    import uuid
+    if "foto" in request.files:
+        foto = request.files["foto"]
+    e = extensao_arquivo(foto.filename)
+    if e in ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp']:
+        u = uuid.uuid1()
+        n = f"{u}.{e}"
+        foto.save(os.path.join("fotos_produtos", n))
+        return n
+    return ""
 
 """
 class ProdutosBuscaFiltro(Resource):

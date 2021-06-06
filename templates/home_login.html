@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/reset.css') }}"></link>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/home.css') }}"></link>
+    
+    <title>Inicio</title>
+</head>
+<body>
+    <header>
+        <div class = "caixa">
+            <h1><img class ="logo"src="{{ url_for('static', filename='images/logo_inicio.png') }}"></h1>
+            <nav class="menu">
+                <ul>
+                    <li><a href="./home">Home</a></li>
+                    <li><a href="./produtos">Produtos</a></li>
+                    <li><a href="./registro_produtos">Registrar Produtos</a></li>
+                    <li><a href="./login">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section class = "principal">
+            <h2>Sobre a PetFriends</h2>
+            <p> Somos a maior rede de Petshop do Brasil! Fundada em 1985 com o propósito de melhorar a vida do seu pet.</br></p>
+            <p></p>
+
+        </section>
+        <section class ="servicos">
+            <div class="nossos-servicos">
+                <h2>Nossos Serviços</h2>
+            </div>
+            <ul>
+                <li>
+                    <h2>Entrega em até 2 Horas</h2>
+                    <img src="/static/images/entrega.png">
+                    <p class ="servico-descricao"> Nosso sistema de delivery está disponivel para todas as regiões, consulte o valor  </p>
+                </li>
+                <li>
+                    <h2>Retirada na loja</h2>
+                    <img src="/static/images/loja.png">
+                    <p class ="servico-descricao">Após finalizar sua compra, poderá escolher retirar na loja em 30 minutos!</p>
+                </li>
+                <li>
+                    <h2>Programa de fidelidade</h2>
+                    <img src="/static/images/fidelidade.png">
+                    <p class ="servico-descricao">Nosso programa de fidelidade traz uma idéia inovadora com compras programadas para seu pet!</p>
+                </li>
+            </ul>
+        </section>
+
+
+    </main>
+   
+</body>
+<footer>
+    <img src="/static/images/pata-de-cachorro.png">
+	<p class="copyright">&copy; Copyright Pet Friends - 2021</p>
+</footer>
+</html>

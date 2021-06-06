@@ -13,9 +13,7 @@
                 <nav class="menu">
                     <ul>
                         <li><a href="./home">Home</a></li>
-                        <li><a href="">Sobre Nós</a></li>
-                        <li><a href="">Serviços</a></li>
-                        <li><a href="">Contato</a></li>
+                        <li><a href="./produtos">Produtos</a></li>
                         <li><a href="./login">Logout</a></li>
                     </ul>
                 </nav>
@@ -52,8 +50,8 @@
                         </div>
                     </div>
                     <a href = "#" class = "product-name">{{ produto.nome_produto }}</a>
-                    <p class = "product-price"> {{produto.descricao_produto}} </p>
-                    <p class = "product-price"> {{ produto.preco_produto}}</p>
+                    <p class = ""> {{produto.descricao_produto}} </p>
+                    <p class = "product-price">R$ {{ produto.preco_produto}}</p>
                 </div>
                 {% endfor %}
                 

@@ -1,9 +1,10 @@
 from flask.helpers import make_response
 from flask_restful import Resource, reqparse
-from flask import render_template
+from flask import render_template,request
 from models.vendedor import VendedorModel
 from werkzeug.security import safe_str_cmp
 import traceback
+import os
 
 atributos = reqparse.RequestParser()
 atributos.add_argument('nome_vendedor', type=str, required=True, help="Ei! o seu 'nome' é obrigatório!")
@@ -97,3 +98,6 @@ class VendedorConfirmado(Resource):
         vendedor.salvar_vendedor()
         headers = {'Content-Type': 'text/html'}
         return make_response(render_template('usuario_confirmado.html' ), 200, headers)
+
+
+
