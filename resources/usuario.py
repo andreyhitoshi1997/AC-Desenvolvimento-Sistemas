@@ -75,7 +75,10 @@ class UsuarioLogin(Resource):
         user = UsuarioModel.achar_por_login(dados['email_usuario'])
         if user and safe_str_cmp(user.senha_usuario, dados['senha_usuario']):
             if user.ativado:
-                return make_response(render_template("home.html", message='Login realizado com sucesso!'), 200)
+                r = make_response(render_template("home.html", message='Login realizado com sucesso!'), 200)
+                r.set_cookie("login", dados['email_usuario'], samesite="Strict")
+                r.set_cookie("senha", dados['senha_usuario'], samesite="Strict")
+                return r
             return make_response(render_template("login.html", message='Usuário não confirmado'), 400)
         return make_response(render_template("login.html", message='Usuário ou senha incorretos.'), 401)
 

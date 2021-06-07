@@ -9,12 +9,14 @@
     <body>
         <header>
             <div class = "caixa">
-                <h1><img src="{{ url_for('static', filename='images/logo_inicio.png') }}" class="logo-inicio"></h1>
+                <h1 style="width: 25%;"><img src="{{ url_for('static', filename='images/logo_inicio.png') }}" ></h1>
                 <nav class="menu">
                     <ul>
-                        <li><a href="./home">Home</a></li>
+                        <li><a href="./home_login">Home</a></li>
                         <li><a href="./produtos">Produtos</a></li>
-                        <li><a href="./login">Logout</a></li>
+                        <li class = "carrinho">
+                            <a href="./carrinho">Carrinho <span>0</span></a>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -33,7 +35,7 @@
                             <span><i class = "fas fa-plus"></i></span>
                         </button>
                         <button type = "button" class = "btn-buy"> Comprar Agora
-                            <span><i class = "fas fa-shopping-cart"></i></span>
+                            <span><i class ="fas fa-shopping-cart"></i></span>
                         </button>
                     </div>
                 </div>
@@ -49,14 +51,18 @@
                             <span><i class = "far fa-star"></i></span>
                         </div>
                     </div>
-                    <a href = "#" class = "product-name">{{ produto.nome_produto }}</a>
+                    <a href = "#" class = "product-name" id ="product-name">{{ produto.nome_produto }}</a>
                     <p class = ""> {{produto.descricao_produto}} </p>
-                    <p class = "product-price">R$ {{ produto.preco_produto}}</p>
+                    <p class = "product-price" id = "product-price">R$ {{ produto.preco_produto}}</p>
                 </div>
                 {% endfor %}
                 
             </div>
        </div>
+       
     </body>
-
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}">
+        
+    </script>
 </html>

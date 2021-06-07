@@ -15,6 +15,7 @@ import json
 import werkzeug
 
 
+
 app = Flask(__name__, template_folder='templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -63,18 +64,21 @@ def cria_banco():
 def home():
     return render_template('home.html')
 
-
-@app.route('/main_home')
+@app.route('/home_login')
 def main_home():
-
-    if login_ok_vend(request):
-        return render_template('home_login.html')
-    return render_template('login.html', message="Sem autorização")
+    #if login_ok_vend(request):
+    return render_template('home_login.html')
+    #return render_template('login.html', message="Sem autorização")"""
 
 
 @app.route('/')
 def login():
     return render_template('login.html')
+
+
+@app.route("/login_vendedor")
+def login_vendedor():
+    return render_template('login_vendedor.html')
 
 
 @app.route('/cadastros')
@@ -162,7 +166,7 @@ def produtos():
 
 @app.route('/produtos/registro')
 def registro():
-    #logado = login_ok()
+    #logado = login_ok_vend()
     #if logado is None:
         #return render_template('home.html')
     return render_template('registro_produtos.html')
@@ -172,14 +176,15 @@ def login_ok(req):
     login = req.cookies.get("login")
     senha = req.cookies.get("senha")
     user = UsuarioModel.achar_por_login(login)
-    return user is not None and safe_str_cmp(user.senha, senha)
+    return user is not None and safe_str_cmp(user.senha_usuario, senha)
 
 
 def login_ok_vend(request):
     login = request.cookies.get("login")
     senha = request.cookies.get("senha")
+    ativado = request.cookies.get("ativado")
     user = VendedorModel.achar_por_login(login)
-    return user is not None and safe_str_cmp(user.senha, senha)
+    return user is not None and safe_str_cmp(user.senha_vendedor, senha)
 
 
 api.add_resource(VendedorRegistro, '/vendedor_cadastro')  # POST

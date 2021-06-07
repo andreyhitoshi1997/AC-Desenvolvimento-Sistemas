@@ -65,7 +65,7 @@ class VendedorRegistro(Resource):
             vendedor.deletar_vendedor()
             traceback.print_exc()
             return make_response(render_template("cadastro_vendedores.html", message='Erro interno de servidor'), 500)
-        return make_response(render_template("login.html", message="Sucesso! Cadastro pendente de confirmação via email"), 201)
+        return make_response(render_template("login_vendedor.html", message="Sucesso! Cadastro pendente de confirmação via email"), 201)
 
 
 class VendedorLogin(Resource):
@@ -75,7 +75,11 @@ class VendedorLogin(Resource):
         user = VendedorModel.achar_por_login(dados['email_vendedor'])
         if user and safe_str_cmp(user.senha_vendedor, dados['senha_vendedor']):
             if user.ativado:
-                return make_response(render_template("home.html", message='Login realizado com sucesso!'), 200)
+                r = make_response(render_template("home_login.html", message='Login realizado com sucesso!'), 200)
+                r.set_cookie("login", dados["email_vendedor"], samesite="Strict")
+                r.set_cookie("senha", dados["senha_vendedor"], samesite="Strict")
+               # r.set_cookie("ativado", dados["ativado"], samesite="Strict")
+                return r
             return make_response(render_template("login.html", message='Usuário não confirmado, por favor verifique seu e-mail'), 400)
         return make_response(render_template("login.html", message='Usuário ou senha incorretos.'), 401)
 
@@ -97,7 +101,7 @@ class VendedorConfirmado(Resource):
         vendedor.ativado = True
         vendedor.salvar_vendedor()
         headers = {'Content-Type': 'text/html'}
-        return make_response(render_template('usuario_confirmado.html' ), 200, headers)
+        return make_response(render_template('usuario_confirmado.html'), 200, headers)
 
 
 

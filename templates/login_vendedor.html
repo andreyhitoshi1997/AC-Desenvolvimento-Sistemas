@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
+    <title>Login Vendedor</title>
     
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/login.css') }}"></link>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
@@ -18,10 +18,11 @@
                 <img  class ='pata'src='/static/images/pata-de-cachorro.png'>
                 <h2 class="title title-primary">PetFriends</h2>
                 <p class="description description-primary">Bem Vindo a maior rede de PetShop do Brasil</p>
+                <p class="description description-primary">Venda seus produtos na melhor plataforma</p>
                 
             </div>    
             <div class="second-column">
-                <h2 class="title title-second">Login</h2>
+                <h2 class="title title-second">Login Vendedor</h2>
                 <div class="social-media">
                     <ul class="list-social-media">
                         <a class="link-social-media" href="#">
@@ -41,15 +42,15 @@
                         </a>
                     </ul>
                 </div><!-- social media -->
-                <form class="form" action="/usuario_login" method="POST">                   
+                <form class="form" action="/vendedor_login" method="POST">                   
                     <label class="label-input" for="">
                         <i class="far fa-envelope icon-modify"></i>
-                        <input type="email" id="email" name='email_usuario' placeholder="Email" required>
+                        <input type="email" id="email" name='email_vendedor' placeholder="Email" autocomplete ="off" required>
                     </label>
                     
                     <label class="label-input" for="">
                         <i class="fas fa-lock icon-modify"></i>
-                        <input type="password" id="password" name="senha_usuario" placeholder="Password" required>
+                        <input type="password" id="password" name="senha_vendedor" placeholder="Password" required>
                     </label>
                     <div class="g-recaptcha" data-sitekey="{{ sitekey }}"></div> <br/> 
                     <button id="signin" class="btn btn-second">Login</button></br>
@@ -57,7 +58,6 @@
                         <label class="login_error">{{  message }}</label>
                     {% endif %}
                     <p class="nova_conta">Não tem uma conta?  <a href="/cadastros">Crie uma nova conta</a></p>
-                    <p class="nova_conta">Já é vendedor?  <a href="/login_vendedor">Clique Aqui</a></p>
                 </form>
             </div><!-- second column -->
         </div><!-- first content -->
